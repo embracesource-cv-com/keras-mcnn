@@ -1,4 +1,4 @@
-# -*- coding:utf-8 _*-
+# -*- coding:utf-8 -*-
 import os
 import csv
 import cv2

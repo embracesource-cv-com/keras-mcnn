@@ -1,4 +1,4 @@
-# -*- coding:utf-8 _*-
+# -*- coding:utf-8 -*-
 from keras.models import Model
 from keras.layers import Conv2D, MaxPooling2D, Input, Concatenate
 
