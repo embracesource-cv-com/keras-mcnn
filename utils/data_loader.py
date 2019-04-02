@@ -1,4 +1,4 @@
-# -*- coding:utf-8 _*-
+# -*- coding:utf-8 -*-
 import numpy as np
 import cv2
 import os
@@ -15,6 +15,7 @@ class DataLoader(object):
         self.num_samples = len(self.data_files)
         self.blob_list = []
 
+        print('Loading data, wait a moment...')
         for fname in self.data_files:
             img = cv2.imread(os.path.join(self.data_path, fname), 0)
             img = img.astype(np.float32, copy=False)
