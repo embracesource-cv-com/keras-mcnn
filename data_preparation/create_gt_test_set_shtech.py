@@ -3,7 +3,7 @@ import cv2
 import csv
 import argparse
 from scipy.io import loadmat
-from . import gen_density_map
+import gen_density_map
 
 
 def main(args):

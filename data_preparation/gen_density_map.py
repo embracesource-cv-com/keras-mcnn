@@ -13,52 +13,45 @@ def gen_density_map(img, anno_points):
     """
     density_map = np.zeros_like(img, dtype=np.float64)
     h, w = density_map.shape
-
-    # 若没有标注数据
-    if anno_points.size == 0:
-        return density_map
-
-    # 若只有一个标注数据
-    if anno_points.shape[0] == 1:
-        x = max(0, min(w-1, round(anno_points[0, 0])))
-        y = max(0, min(h-1, round(anno_points[0, 1])))
-        density_map[int(y), int(x)] = 255
-        return density_map
+    kernel_size = 15  # 高斯核size
+    sigma = 4.0  # 标准差
 
     for point in anno_points:
-        f_sz = 15
-        sigma = 4.0
-        H = np.multiply(cv2.getGaussianKernel(f_sz, sigma), (cv2.getGaussianKernel(f_sz, sigma)).T)
-        x = min(w - 1, max(0, abs(math.floor(point[0]))))
-        y = min(h - 1, max(0, abs(math.floor(point[1]))))
-        if x >= w or y >= h:
-            continue
-
+        # 人头的中心点坐标
+        x, y = min(w-1, abs(math.floor(point[0]))), min(h-1, abs(math.floor(point[1])))
         # 左上角坐标以及右下角坐标
-        x1, y1 = x - f_sz // 2, y - f_sz // 2
-        x2, y2 = x + f_sz // 2 + 1, y + f_sz // 2 + 1
+        x1, y1 = x - kernel_size // 2, y - kernel_size // 2
+        x2, y2 = x + kernel_size // 2 + 1, y + kernel_size // 2 + 1
 
-        dfx1, dfy1, dfx2, dfy2 = 0, 0, 0, 0
-        change = False
+        out_of_bounds = False
+        dx1, dy1, dx2, dy2 = 0, 0, 0, 0  # 越界的偏移量
+        # 以下四个if用来判断两个顶角的x,y是否越界
         if x1 < 0:
-            dfx1 = abs(x1)
+            dx1 = abs(x1)
             x1 = 0
-            change = True
+            out_of_bounds = True
         if y1 < 0:
-            dfy1 = abs(y1)
+            dy1 = abs(y1)
             y1 = 0
-            change = True
+            out_of_bounds = True
         if x2 > w:
-            dfx2 = x2 - w
+            dx2 = x2 - w
             x2 = w
-            change = True
+            out_of_bounds = True
         if y2 > h:
-            dfy2 = y2 - h
+            dy2 = y2 - h
             y2 = h
-            change = True
-        x1h, y1h, x2h, y2h = 1 + dfx1, 1 + dfy1, f_sz - dfx2, f_sz - dfy2
-        if change is True:
-            H = np.multiply(cv2.getGaussianKernel(y2h-y1h+1, sigma), (cv2.getGaussianKernel(x2h-x1h+1, sigma)).T)
+            out_of_bounds = True
+
+        if out_of_bounds:
+            # 如果越界，则调整高斯核的大小
+            kernel_h = kernel_size - dy1 - dy2
+            kernel_w = kernel_size - dx1 - dx2
+            # 生成大小为(kernel_h, kernel_w)的高斯核
+            H = np.multiply(cv2.getGaussianKernel(kernel_h, sigma), (cv2.getGaussianKernel(kernel_w, sigma)).T)
+        else:
+            # 生成大小为(15, 15)的高斯核
+            H = np.multiply(cv2.getGaussianKernel(kernel_size, sigma), (cv2.getGaussianKernel(kernel_size, sigma)).T)
 
         density_map[y1:y2, x1:x2] += H
     return density_map
