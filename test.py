@@ -1,37 +1,25 @@
-# -*- coding:utf-8 _*-
+# -*- coding:utf-8 -*-
 from keras.models import load_model
 from utils.data_loader import DataLoader
+from utils.heatmap import save_heatmap
 import numpy as np
 import config as cfg
 import argparse
 import os
-import cv2
-
-
-def save_density_map(save_dir, density_map, fname='results.png'):
-    """
-    保存预测密度图
-    :param save_dir: 保存目录
-    :param density_map: 密度图矩阵
-    :param fname: 保存文件名
-    :return:
-    """
-    density_map = 255*density_map/np.max(density_map)
-    density_map = density_map[0][0]
-    cv2.imwrite(os.path.join(save_dir, fname), density_map)
 
 
 def main(args):
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     dataset = args.dataset  # 'A' or 'B'
     if dataset == 'A':
         model_path = './trained_models/mcnn_A_train.hdf5'
     else:
-        model_path = './trained_models/mcnn_B_train_generator.hdf5'
+        model_path = './trained_models/mcnn_B_train.hdf5'
 
     output_dir = './output_{}/'.format(dataset)
-    density_maps_dir = os.path.join(output_dir, 'density_maps')  # directory to save predicted density map
+    heatmaps_dir = os.path.join(output_dir, 'featmaps')  # directory to save featmap
     results_txt = os.path.join(output_dir, 'results.txt')  # file to save predicted results
-    for _dir in [output_dir, density_maps_dir]:
+    for _dir in [output_dir, heatmaps_dir]:
         if not os.path.exists(_dir):
             os.mkdir(_dir)
 
@@ -54,9 +42,10 @@ def main(args):
         pred_count = np.sum(pred)
         mae += abs(gt_count - pred_count)
         mse += ((gt_count - pred_count) * (gt_count - pred_count))
-        # # save density map
-        # save_density_map(density_maps_dir, pred, blob['fname'].split('.')[0] + '.png')
 
+        # save heatmap
+        pred = np.squeeze(pred)  # shape(1, h, w, 1) -> shape(h, w)
+        save_heatmap(pred, blob, test_path, heatmaps_dir)
         # save results
         with open(results_txt, 'a') as f:
             line = '<{}> {:.2f} -- {:.2f}\n'.format(blob['fname'].split('.')[0], gt_count, pred_count)
