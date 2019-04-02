@@ -10,6 +10,7 @@ import argparse
 
 
 def main(args):
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     dataset = args.dataset  # 'A' or 'B'
 
     train_path = cfg.TRAIN_PATH.format(dataset)
