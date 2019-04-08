@@ -17,7 +17,7 @@ def main(args):
         model_path = './trained_models/mcnn_B_train.hdf5'
 
     output_dir = './output_{}/'.format(dataset)
-    heatmaps_dir = os.path.join(output_dir, 'featmaps')  # directory to save featmap
+    heatmaps_dir = os.path.join(output_dir, 'heatmaps')  # directory to save heatmap
     results_txt = os.path.join(output_dir, 'results.txt')  # file to save predicted results
     for _dir in [output_dir, heatmaps_dir]:
         if not os.path.exists(_dir):
