@@ -47,11 +47,12 @@ class DataLoader(object):
     def flow(self, batch_size=32):
         loop_count = self.num_samples // batch_size
         while True:
-            i = np.random.randint(0, loop_count)
-            blobs = self.blob_list[i*batch_size: (i+1)*batch_size]
-            X_batch = np.array([blob['data'] for blob in blobs])
-            Y_batch = np.array([blob['gt'] for blob in blobs])
-            yield X_batch, Y_batch
+            np.random.shuffle(self.blob_list)
+            for i in range(loop_count):
+                blobs = self.blob_list[i*batch_size: (i+1)*batch_size]
+                X_batch = np.array([blob['data'] for blob in blobs])
+                Y_batch = np.array([blob['gt'] for blob in blobs])
+                yield X_batch, Y_batch
 
     def get_all(self):
         X = np.array([blob['data'] for blob in self.blob_list])
