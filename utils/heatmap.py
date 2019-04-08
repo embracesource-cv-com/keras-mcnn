@@ -27,7 +27,7 @@ def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True):
         density_map = den_resized
 
     h, w = img.shape[:2]
-    density_map = density_map * 1500
+    density_map = density_map * 1000
     data = []
     for row in range(h):
         for col in range(w):
