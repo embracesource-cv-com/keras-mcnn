@@ -18,6 +18,9 @@ TEST_PATH = './data/original/shanghaitech/part_{}_final/test_data/images/'
 # 测试集Ground_Truth目录
 TEST_GT_PATH = './data/original/shanghaitech/part_{}_final/test_data/ground_truth_csv/'
 
+# 测试集Ground_Truth heatmap目录
+HM_GT_PATH = './heatmaps_gt'
+
 EPOCHS = 200
 TRAIN_BATCH_SIZE = 32
 VAL_BATCH_SIZE = 1
