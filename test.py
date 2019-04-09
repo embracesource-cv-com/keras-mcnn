@@ -42,8 +42,7 @@ def main(args):
         pred_count = np.sum(pred)
         mae += abs(gt_count - pred_count)
         mse += ((gt_count - pred_count) * (gt_count - pred_count))
-
-        # save heatmap
+        # create and save heatmap
         pred = np.squeeze(pred)  # shape(1, h, w, 1) -> shape(h, w)
         save_heatmap(pred, blob, test_path, heatmaps_dir)
         # save results
