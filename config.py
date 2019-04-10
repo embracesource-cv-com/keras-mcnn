@@ -22,5 +22,5 @@ TEST_GT_PATH = './data/original/shanghaitech/part_{}_final/test_data/ground_trut
 HM_GT_PATH = './heatmaps_gt'
 
 EPOCHS = 200
-TRAIN_BATCH_SIZE = 32
+TRAIN_BATCH_SIZE = 1
 VAL_BATCH_SIZE = 1
