@@ -1,5 +1,6 @@
 # MCNN_in_Keras
-keras实现的人群数量估计网络["Single Image Crowd Counting via Multi Column Convolutional Neural Network"](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Zhang_Single-Image_Crowd_Counting_CVPR_2016_paper.pdf)，持续改进中...
+keras实现的人群数量估计网络["Single Image Crowd Counting via Multi Column Convolutional Neural Network"](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Zhang_Single-Image_Crowd_Counting_CVPR_2016_paper.pdf)  
+>参考pytorch版:https://github.com/svishwa/crowdcount-mcnn
 
 ## 安装
 1. Clone
@@ -30,42 +31,55 @@ keras实现的人群数量估计网络["Single Image Crowd Counting via Multi Co
     cd data_preparation
     python create_gt_test_set_shtech.py [A or B]  # Part_A or Part_B
     ```
-    生成好的ground-truth文件会保存在./data/original/shanghaitech/part_【A or B】_final/test_data/ground_truth_csv目录下
+    生成好的ground-truth文件将会保存在./data/original/shanghaitech/part_【A or B】_final/test_data/ground_truth_csv目录下
     
 5. 生成训练集和验证集
     ```shell
     cd data_preparation
-    python create_training_set_shtech.py [A or B]  # Part_A or Part_B
+    python create_training_set_shtech.py [A or B]
     ```
-    生成好的数据保存在./data/formatted_trainval_【A or B】目录下
+    生成好的数据保存将会在./data/formatted_trainval_【A or B】目录下
 
->2~5步均在工程根目录下操作
+6. 生成热力图  
+    如果你想生成测试集的ground truth热力图：
+    ```shell
+    python create_heatmaps.py [A or B]
+    ```
+    生成好的热力图将会保存在./heatmaps_gt目录下
 
-## 训练
-```shell
-python train.py [A or B]  # Part_A or Part_B
-```
-训练好的模型保存在./trained_models目录下
+>2~6步均在工程根目录下操作
 
 ## 测试
+在./trained_models目录中存放了已经训练好的模型，你可以直接用来测试：
 ```shell
-python test.py [A or B]  # Part_A or Part_B
+python test.py [A or B]
 ```
-测试结果保存在./output_【A or B】目录下
+测试结果将会保存在./output_【A or B】目录下
+
+## 训练
+如果你想自己训练模型，很简单：
+```shell
+python train.py [A or B]
+```
+训练好的模型将会保存在./trained_models目录下
 
 ## 结果
 
-    |        |  MAE  |   MSE  |
-    ---------------------------
-    | Part_A |  todo |  todo  |
-    ---------------------------
-    | Part_B |  33.7 |  58.9  |
+    |        |  MAE   |  MSE   |
+    ----------------------------
+    | Part_A |  154.4 |  221.9 |
+    ----------------------------
+    | Part_B |  33.1  |  56.9  |
+
+**Part_A**   
+原图：  
+![原图](./examples/IMG_2.jpg)   
+Ground Truth (1111) & Estimate (1256)：  
+![GT](./examples/heatmap_gt_IMG_2.png "Ground Truth")&nbsp;![Estimate](./examples/heatmap_IMG_2.png "Estimate")
 
 **Part_B**   
 原图：  
 ![原图](./examples/IMG_148.jpg)   
-Ground truth & Estimate：  
+Ground Truth (252) & Estimate(242)：  
 ![GT](./examples/heatmap_gt_IMG_148.png "Ground Truth")&nbsp;![Estimate](./examples/heatmap_IMG_148.png "Estimate")
-
-## todo
-训练Part_A部分，由于Part_A部分的图片大小不一样，需要修改训练代码。  
+ 
