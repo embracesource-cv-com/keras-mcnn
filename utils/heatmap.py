@@ -6,12 +6,11 @@ from PIL import Image
 import cv2
 
 
-def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True, gt=False):
+def save_heatmap(density_map, blob, output_dir, down_sample=True, gt=False):
     """
     生成热力图并保存
     :param density_map: 2d-array, 密度图
     :param blob: dict
-    :param imgs_dir: 图片目录
     :param output_dir: 结果保存目录
     :param down_sample: bool, 是否有下采样
     :param gt: bool, 是否生成gt的热力图
@@ -35,8 +34,11 @@ def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True, gt=F
     data = []
     for row in range(h):
         for col in range(w):
-            for k in range(int(density_map[row][col])):
-                data.append([col + 1, row + 1])
+            try:
+                for k in range(int(density_map[row][col])):
+                    data.append([col + 1, row + 1])
+            except IndexError:
+                continue
     # 生成heatmap
     hm = HeatMap(data, width=w, height=h)
     # 保存heatmap
