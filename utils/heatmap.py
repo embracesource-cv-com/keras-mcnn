@@ -6,7 +6,7 @@ from PIL import Image
 import cv2
 
 
-def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True):
+def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True, gt=False):
     """
     生成热力图并保存
     :param density_map: 2d-array, 密度图
@@ -14,6 +14,7 @@ def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True):
     :param imgs_dir: 图片目录
     :param output_dir: 结果保存目录
     :param down_sample: bool, 是否有下采样
+    :param gt: bool, 是否生成gt的热力图
     :return:
     """
     img = blob['data']  # 图片数组, shape(h, w, 1)
@@ -48,7 +49,7 @@ def save_heatmap(density_map, blob, imgs_dir, output_dir, down_sample=True):
     bg = Image.new('RGBA', im.size, (0, 0, 139))
     bg.paste(im, (0, 0, x, y), im)
     im_arr = np.array(bg)
-    text = 'GT Count: {}'.format(counts)
+    text = 'GT Count: {}'.format(counts) if gt else 'Est Count: {}'.format(counts)
     cv2.putText(im_arr, text, (10, y - 20), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 1)
     im = Image.fromarray(im_arr)
     im.save(os.path.join(output_dir, hm_name))

@@ -26,7 +26,7 @@ def main(args):
         gt = blob['gt']
         # create and save heatmap
         gt = np.squeeze(gt)  # shape(1, h, w, 1) -> shape(h, w)
-        save_heatmap(gt, blob, test_path, output_dir)
+        save_heatmap(gt, blob, test_path, output_dir, gt=True)
     print('All Done.')
 
 
