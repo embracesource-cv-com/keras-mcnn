@@ -7,6 +7,12 @@ import pandas as pd
 
 class DataLoader(object):
     def __init__(self, data_path, gt_path, shuffle=False, gt_downsample=False):
+        """
+        :param data_path: 图片文件路径
+        :param gt_path: ground truth路径
+        :param shuffle: bool, 是否打乱数据
+        :param gt_downsample: bool, 是否下采样
+        """
         self.data_path = data_path
         self.gt_path = gt_path
         self.shuffle = shuffle
