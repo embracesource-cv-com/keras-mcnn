@@ -4,7 +4,7 @@ from keras.callbacks import ModelCheckpoint
 from model import MCNN
 from utils.data_loader import DataLoader
 from utils.metrics import mae, mse
-import config as cfg
+from config import current_config as cfg
 import os
 import argparse
 

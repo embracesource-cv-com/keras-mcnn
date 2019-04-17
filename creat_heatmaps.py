@@ -2,7 +2,7 @@
 from utils.data_loader import DataLoader
 from utils.heatmap import save_heatmap
 import numpy as np
-import config as cfg
+from config import current_config as cfg
 import argparse
 import os
 
