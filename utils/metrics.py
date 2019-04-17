@@ -3,6 +3,12 @@ import keras.backend as K
 
 
 def mae(y_true, y_pred):
+    """
+    mean absolute error
+    :param y_true: shape(1, h, w, 1)
+    :param y_pred: shape(1, h, w, 1)
+    :return: float
+    """
     shape = K.shape(y_pred)
     h, w = shape[1], shape[2]
     y_true = K.reshape(y_true, [-1, h * w])
@@ -12,6 +18,12 @@ def mae(y_true, y_pred):
 
 
 def mse(y_true, y_pred):
+    """
+    mean square error
+    :param y_true: shape(1, h, w, 1)
+    :param y_pred: shape(1, h, w, 1)
+    :return: float
+    """
     shape = K.shape(y_pred)
     h, w = shape[1], shape[2]
     y_true = K.reshape(y_true, [-1, h * w])
