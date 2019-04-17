@@ -5,7 +5,7 @@ import cv2
 import math
 import random
 from scipy.io import loadmat
-import gen_density_map
+from . import gen_density_map
 import argparse
 
 
