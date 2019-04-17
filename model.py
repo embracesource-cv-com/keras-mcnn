@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     model.py
+   Description:   model definition
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 from keras.models import Model
 from keras.layers import Conv2D, MaxPooling2D, Input, Concatenate
 

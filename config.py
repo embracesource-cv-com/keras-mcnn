@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     config.py
+   Description:   global config parameters
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 
 
 class Config(object):

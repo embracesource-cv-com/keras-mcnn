@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     data_loader.py
+   Description:   data preprocess and load
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 import numpy as np
 import cv2
 import os

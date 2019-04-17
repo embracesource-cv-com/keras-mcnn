@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     create_heatmaps.py
+   Description:   create gt heatmaps of test set
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 from utils.data_loader import DataLoader
 from utils.heatmap import save_heatmap
 import numpy as np

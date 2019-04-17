@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     heatmap.py
+   Description:   generate and save heatmap
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 import numpy as np
 import os
 from pyheatmap.heatmap import HeatMap

@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     train.py
+   Description:   training entrance
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
 from model import MCNN

@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+   File Name:     metrics.py
+   Description:   definition of metrics
+   Author:        steven.yi
+   date:          2019/04/17
+"""
 import keras.backend as K
 
 
