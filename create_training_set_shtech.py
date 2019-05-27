@@ -5,7 +5,7 @@ import cv2
 import math
 import random
 from scipy.io import loadmat
-from . import gen_density_map
+import gen_density_map
 import argparse
 
 
@@ -15,13 +15,13 @@ def main(args):
     dataset = args.dataset
     N = 9  # 在每张原始图片上采用9张小图片
     dataset_name = ''.join(['shanghaitech_part_', dataset, '_patches_', str(N)])
-    path = ''.join(['../data/original/shanghaitech/part_', dataset, '_final/train_data/images/'])
+    path = ''.join(['../data/original/part_', dataset, '_final/train_data/images/'])
     output_path = '../data/formatted_trainval_{}/'.format(dataset)
     train_path_img = ''.join((output_path, dataset_name, '/train/'))
     train_path_den = ''.join((output_path, dataset_name, '/train_den/'))
     val_path_img = ''.join((output_path, dataset_name, '/val/'))
     val_path_den = ''.join((output_path, dataset_name, '/val_den/'))
-    gt_path = ''.join(['../data/original/shanghaitech/part_', dataset, '_final/train_data/ground_truth/'])
+    gt_path = ''.join(['../data/original/part_', dataset, '_final/train_data/ground_truth/'])
 
     for i in [output_path, train_path_img, train_path_den, val_path_img, val_path_den]:
         if not os.path.exists(i):

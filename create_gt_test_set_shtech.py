@@ -4,14 +4,14 @@ import cv2
 import csv
 import argparse
 from scipy.io import loadmat
-from . import gen_density_map
+import gen_density_map
 
 
 def main(args):
     dataset = args.dataset
-    path = ''.join(['./data/original/shanghaitech/part_', dataset, '_final/test_data/images/'])
-    gt_path = ''.join(['./data/original/shanghaitech/part_', dataset, '_final/test_data/ground_truth/'])
-    gt_path_csv = ''.join(['./data/original/shanghaitech/part_', dataset, '_final/test_data/ground_truth_csv/'])
+    path = ''.join(['./data/original/part_', dataset, '_final/test_data/images/'])
+    gt_path = ''.join(['./data/original/part_', dataset, '_final/test_data/ground_truth/'])
+    gt_path_csv = ''.join(['./data/original/part_', dataset, '_final/test_data/ground_truth_csv/'])
     if not os.path.exists(gt_path_csv):
         os.makedirs(gt_path_csv)
     if dataset == 'A':
