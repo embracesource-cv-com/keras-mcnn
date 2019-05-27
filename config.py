@@ -9,22 +9,24 @@
 
 class Config(object):
     # 模型存放目录
-    MODEL_DIR = './trained_models/'
+    MODEL_DIR = '/tmp/mcnn'
+
+    ORIGIN_DATA_PATH = "/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/"
 
     # 训练集目录
-    TRAIN_PATH = './data/formatted_trainval_{0}/shanghaitech_part_{0}_patches_9/train'
+    TRAIN_PATH = '/opt/dataset/crowd_counting/shanghaitech/formatted_trainval_{0}/train'
     # 训练集Ground-Truth目录
-    TRAIN_GT_PATH = './data/formatted_trainval_{0}/shanghaitech_part_{0}_patches_9/train_den'
+    TRAIN_GT_PATH = '/opt/dataset/crowd_counting/shanghaitech/formatted_trainval_{0}/train_den'
 
     # 验证集目录
-    VAL_PATH = './data/formatted_trainval_{0}/shanghaitech_part_{0}_patches_9/val'
+    VAL_PATH = '/opt/dataset/crowd_counting/shanghaitech/formatted_trainval_{0}/val'
     # 验证集Ground_Truth目录
-    VAL_GT_PATH = './data/formatted_trainval_{0}/shanghaitech_part_{0}_patches_9/val_den'
+    VAL_GT_PATH = '/opt/dataset/crowd_counting/shanghaitech/formatted_trainval_{0}/val_den'
 
     # 测试集目录
-    TEST_PATH = './data/original/shanghaitech/part_{}_final/test_data/images/'
+    TEST_PATH = '/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final//test_data/images/'
     # 测试集Ground_Truth目录
-    TEST_GT_PATH = './data/original/shanghaitech/part_{}_final/test_data/ground_truth_csv/'
+    TEST_GT_PATH = '/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/test_data/ground_truth_csv/'
 
     # 测试集Ground_Truth heatmap目录
     HM_GT_PATH = './heatmaps_gt'
@@ -33,5 +35,25 @@ class Config(object):
     TRAIN_BATCH_SIZE = 1
     VAL_BATCH_SIZE = 1
 
+    def init_path(self, ds):
+        """
+        初始化路径
+        :param ds: 数据集名称 A or B
+        :return: None
+        """
+        self.ORIGIN_DATA_PATH = self.ORIGIN_DATA_PATH.format(ds)
+        self.TRAIN_PATH = self.TRAIN_PATH.format(ds)
+        self.TRAIN_GT_PATH = self.TRAIN_GT_PATH.format(ds)
+
+        self.VAL_PATH = self.VAL_PATH.format(ds)
+        self.VAL_GT_PATH = self.VAL_GT_PATH.format(ds)
+
+        self.TEST_PATH = self.TEST_PATH.format(ds)
+        self.TEST_GT_PATH = self.TEST_GT_PATH.format(ds)
+
 
 current_config = Config()
+
+if __name__ == '__main__':
+    current_config.init_path('A')
+    print(current_config.ORIGIN_DATA_PATH)
