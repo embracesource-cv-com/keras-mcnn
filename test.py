@@ -5,9 +5,9 @@
    Author:        steven.yi
    date:          2019/04/17
 """
-from keras.models import load_model
 from utils.data_loader import DataLoader
 from utils.heatmap import save_heatmap
+from model import MCNN
 import numpy as np
 from config import current_config as cfg
 import argparse
@@ -17,32 +17,30 @@ import os
 def main(args):
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     dataset = args.dataset  # 'A' or 'B'
-    if dataset == 'A':
-        model_path = './trained_models/mcnn_A_train.hdf5'
-    else:
-        model_path = './trained_models/mcnn_B_train.hdf5'
+    output_dir = args.output_dir
+    cfg.init_path(dataset)
 
-    output_dir = './output_{}/'.format(dataset)
     heatmaps_dir = os.path.join(output_dir, 'heatmaps')  # directory to save heatmap
     results_txt = os.path.join(output_dir, 'results.txt')  # file to save predicted results
     for _dir in [output_dir, heatmaps_dir]:
         if not os.path.exists(_dir):
             os.mkdir(_dir)
 
-    test_path = cfg.TEST_PATH.format(dataset)
-    test_gt_path = cfg.TEST_GT_PATH.format(dataset)
     # load test set
-    data_loader = DataLoader(test_path, test_gt_path, shuffle=False, gt_downsample=True)
+    data_loader = DataLoader(cfg.TEST_PATH,
+                             cfg.TEST_GT_PATH,
+                             shuffle=False,
+                             gt_downsample=True)
     # load model
-    model = load_model(model_path)
+    model = MCNN(input_shape=(None, None, 1))
+    model.load_weights(cfg.WEIGHT_PATH, by_name=True)
 
     # test
     print('Testing Part_{} ...'.format(dataset))
     mae = 0.0
     mse = 0.0
-    for blob in data_loader:
-        img = blob['data']
-        gt = blob['gt']
+    for idx, (img, gt) in enumerate(data_loader):
+        filename = data_loader.filename_list[idx]
         pred = model.predict(np.expand_dims(img, axis=0))
         gt_count = np.sum(gt)
         pred_count = np.sum(pred)
@@ -50,10 +48,10 @@ def main(args):
         mse += ((gt_count - pred_count) * (gt_count - pred_count))
         # create and save heatmap
         pred = np.squeeze(pred)  # shape(1, h, w, 1) -> shape(h, w)
-        save_heatmap(pred, blob, test_path, heatmaps_dir)
+        save_heatmap(pred, img, filename, heatmaps_dir)
         # save results
         with open(results_txt, 'a') as f:
-            line = '<{}> {:.2f} -- {:.2f}\n'.format(blob['fname'].split('.')[0], gt_count, pred_count)
+            line = '<{}> {:.2f} -- {:.2f}\n'.format(filename, gt_count, pred_count)
             f.write(line)
 
     mae = mae / data_loader.num_samples
@@ -66,5 +64,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset", help="the dataset you want to predict", choices=['A', 'B'])
+    parser.add_argument("output_dir", help="output directory to save predict heatmaps")
+
     args = parser.parse_args()
     main(args)

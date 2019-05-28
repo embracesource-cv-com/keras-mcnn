@@ -12,18 +12,17 @@ from PIL import Image
 import cv2
 
 
-def save_heatmap(density_map, blob, output_dir, down_sample=True, gt=False):
+def save_heatmap(density_map, img, img_name, output_dir, down_sample=True, gt=False):
     """
     生成热力图并保存
     :param density_map: 2d-array, 密度图
-    :param blob: dict
+    :param img: numpy [H,W,1]
+    :param img_name: "abc.jpg"
     :param output_dir: 结果保存目录
     :param down_sample: bool, 是否有下采样
     :param gt: bool, 是否生成gt的热力图
     :return:
     """
-    img = blob['data']  # 图片数组, shape(h, w, 1)
-    img_name = blob['fname']  # 图片文件名
     counts = int(np.sum(density_map))  # 人数
     print('generating heatmap for', img_name)
 
@@ -48,7 +47,7 @@ def save_heatmap(density_map, blob, output_dir, down_sample=True, gt=False):
     # 生成heatmap
     hm = HeatMap(data, width=w, height=h)
     # 保存heatmap
-    hm_name = 'heatmap_'+img_name.split('.')[0]+'.png'
+    hm_name = 'heatmap_' + img_name.split('.')[0] + '.png'
     hm.heatmap(save_as=os.path.join(output_dir, hm_name))
 
     # 使用蓝色填充heatmap背景, 并显示人群数量
