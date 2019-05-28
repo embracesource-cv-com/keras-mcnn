@@ -16,7 +16,7 @@ def save_heatmap(density_map, img, img_name, output_dir, down_sample=True, gt=Fa
     """
     生成热力图并保存
     :param density_map: 2d-array, 密度图
-    :param img: numpy [H,W,1]
+    :param img: numpy [B,H,W,1]
     :param img_name: "abc.jpg"
     :param output_dir: 结果保存目录
     :param down_sample: bool, 是否有下采样
@@ -27,16 +27,18 @@ def save_heatmap(density_map, img, img_name, output_dir, down_sample=True, gt=Fa
     print('generating heatmap for', img_name)
 
     # 如果密度图进行下采样4倍, 则需要还原到原始大小
+
     if down_sample:
-        den_resized = np.zeros((density_map.shape[0] * 4, density_map.shape[1] * 4))
-        for i in range(den_resized.shape[0]):
-            for j in range(den_resized.shape[1]):
+        h, w = density_map.shape
+        den_resized = np.zeros((h * 4, w * 4))
+        for i in range(h*4):
+            for j in range(w*4):
                 den_resized[i][j] = density_map[int(i / 4)][int(j / 4)] / 16
         density_map = den_resized
 
-    h, w = img.shape[:2]
     density_map = density_map * 1000
     data = []
+    h, w = img.shape[1:3]
     for row in range(h):
         for col in range(w):
             try:
