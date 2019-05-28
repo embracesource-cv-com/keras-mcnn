@@ -41,7 +41,7 @@ class Config(object):
         :param ds: 数据集名称 A or B
         :return: None
         """
-        self.MODEL_PATH = self.MODEL_PATH.format(ds)
+        self.WEIGHT_PATH = self.WEIGHT_PATH.format(ds)
         self.ORIGIN_DATA_PATH = self.ORIGIN_DATA_PATH.format(ds)
         self.TRAIN_PATH = self.TRAIN_PATH.format(ds)
         self.TRAIN_GT_PATH = self.TRAIN_GT_PATH.format(ds)

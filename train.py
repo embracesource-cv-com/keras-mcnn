@@ -22,7 +22,7 @@ def main(args):
 
     # 加载数据生成器
     train_data_gen = DataLoader(cfg.TRAIN_PATH,
-                                cfg.TEST_GT_PATH,
+                                cfg.TRAIN_GT_PATH,
                                 batch_size=cfg.TRAIN_BATCH_SIZE,
                                 shuffle=True,
                                 gt_downsample=True)
