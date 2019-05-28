@@ -41,7 +41,7 @@ def main(args):
     mse = 0.0
     for idx, (img, gt) in enumerate(data_loader):
         filename = data_loader.filename_list[idx]
-        pred = model.predict(np.expand_dims(img, axis=0))
+        pred = model.predict(img)
         gt_count = np.sum(gt)
         pred_count = np.sum(pred)
         mae += abs(gt_count - pred_count)
@@ -54,8 +54,8 @@ def main(args):
             line = '<{}> {:.2f} -- {:.2f}\n'.format(filename, gt_count, pred_count)
             f.write(line)
 
-    mae = mae / data_loader.num_samples
-    mse = np.sqrt(mse / data_loader.num_samples)
+    mae = mae / len(data_loader)
+    mse = np.sqrt(mse / len(data_loader))
     print('MAE: %0.2f, MSE: %0.2f' % (mae, mse))
     with open(results_txt, 'a') as f:
         f.write('MAE: %0.2f, MSE: %0.2f' % (mae, mse))
