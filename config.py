@@ -9,7 +9,7 @@
 
 class Config(object):
     # 模型存放目录
-    MODEL_DIR = '/tmp/mcnn'
+    WEIGHT_PATH = '/tmp/mcnn_{}.h5'
 
     ORIGIN_DATA_PATH = "/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/"
 
@@ -41,6 +41,7 @@ class Config(object):
         :param ds: 数据集名称 A or B
         :return: None
         """
+        self.MODEL_PATH = self.MODEL_PATH.format(ds)
         self.ORIGIN_DATA_PATH = self.ORIGIN_DATA_PATH.format(ds)
         self.TRAIN_PATH = self.TRAIN_PATH.format(ds)
         self.TRAIN_GT_PATH = self.TRAIN_GT_PATH.format(ds)
