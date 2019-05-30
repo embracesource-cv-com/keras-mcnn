@@ -8,6 +8,8 @@
 
 
 class Config(object):
+    WEIGHT_PATH = None
+
     ORIGIN_DATA_PATH = "/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/"
 
     # 训练集目录

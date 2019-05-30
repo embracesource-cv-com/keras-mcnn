@@ -18,6 +18,7 @@ def main(args):
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     dataset = args.dataset  # 'A' or 'B'
     output_dir = args.output_dir
+    weight_path = args.weight_path
     cfg.init_path(dataset)
 
     heatmaps_dir = os.path.join(output_dir, 'heatmaps')  # directory to save heatmap
@@ -33,7 +34,7 @@ def main(args):
                              gt_downsample=True)
     # load model
     model = MCNN(input_shape=(None, None, 1))
-    model.load_weights(cfg.WEIGHT_PATH, by_name=True)
+    model.load_weights(weight_path, by_name=True)
 
     # test
     print('Testing Part_{} ...'.format(dataset))
@@ -63,8 +64,9 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", help="the dataset you want to predict", choices=['A', 'B'])
-    parser.add_argument("output_dir", help="output directory to save predict heatmaps")
+    parser.add_argument("--dataset", default="A", help="the dataset you want to predict", choices=['A', 'B'])
+    parser.add_argument("--weight_path", type=str, default="tmp/mcnn-A.h5", help="weight path")
+    parser.add_argument("--output_dir", default="./", help="output directory to save predict heatmaps")
 
     args = parser.parse_args()
     main(args)
