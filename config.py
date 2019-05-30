@@ -8,9 +8,6 @@
 
 
 class Config(object):
-    # 模型存放目录
-    WEIGHT_PATH = '/tmp/mcnn_{}.h5'
-
     ORIGIN_DATA_PATH = "/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/"
 
     # 训练集目录
@@ -28,10 +25,7 @@ class Config(object):
     # 测试集Ground_Truth目录
     TEST_GT_PATH = '/opt/dataset/crowd_counting/shanghaitech/original/part_{}_final/test_data/ground_truth_csv/'
 
-    # 测试集Ground_Truth heatmap目录
-    HM_GT_PATH = './heatmaps_gt'
-
-    EPOCHS = 200
+    EPOCHS = 50
     TRAIN_BATCH_SIZE = 1
     VAL_BATCH_SIZE = 1
 
@@ -41,7 +35,7 @@ class Config(object):
         :param ds: 数据集名称 A or B
         :return: None
         """
-        self.WEIGHT_PATH = self.WEIGHT_PATH.format(ds)
+        self.WEIGHT_PATH = '/tmp/mcnn-' + ds + '.{epoch:03d}.h5'  # 权重存放目录
         self.ORIGIN_DATA_PATH = self.ORIGIN_DATA_PATH.format(ds)
         self.TRAIN_PATH = self.TRAIN_PATH.format(ds)
         self.TRAIN_GT_PATH = self.TRAIN_GT_PATH.format(ds)

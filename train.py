@@ -13,10 +13,20 @@ from utils.metrics import mae, mse
 from config import current_config as cfg
 import os
 import argparse
+import tensorflow as tf
+import keras
+
+
+def set_gpu_growth():
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    config = tf.ConfigProto(allow_soft_placement=True)  # because no supported kernel for GPU devices is available
+    config.gpu_options.allow_growth = True
+    session = tf.Session(config=config)
+    keras.backend.set_session(session)
 
 
 def main(args):
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    set_gpu_growth()
     dataset = args.dataset  # 'A' or 'B'
     cfg.init_path(dataset)  # 初始化路径名
 
@@ -35,19 +45,20 @@ def main(args):
     # 定义模型
     input_shape = (None, None, 1)
     model = MCNN(input_shape)
-    adam = Adam(lr=1e-4)
+    adam = Adam(lr=1e-5)
     model.compile(loss='mse', optimizer=adam, metrics=[mae, mse])
 
     # 定义callback
-    checkpointer_best_train = ModelCheckpoint(
+    checkpoint = ModelCheckpoint(
         filepath=cfg.WEIGHT_PATH,
         monitor='val_loss',
         verbose=1,
         save_best_only=True,
         save_weights_only=True,
-        mode='min'
+        mode='min',
+        period=5
     )
-    callback_list = [checkpointer_best_train]
+    callback_list = [checkpoint]
 
     # 训练
     print('Training Part_{} ...'.format(dataset))
@@ -55,6 +66,8 @@ def main(args):
                         validation_data=val_data_gen,
                         epochs=cfg.EPOCHS,
                         callbacks=callback_list,
+                        use_multiprocessing=True,
+                        workers=4,
                         verbose=1)
 
 
