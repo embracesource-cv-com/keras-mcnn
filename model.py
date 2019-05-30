@@ -39,7 +39,7 @@ def MCNN(input_shape=None):
     # merge feature map of 3 columns in last dimension
     merges = Concatenate(axis=-1)([column_1, column_2, column_3])
     # density map
-    density_map = Conv2D(1, (1, 1), padding='same', name='density_conv')(merges)
+    density_map = Conv2D(1, (1, 1), padding='same', activation='relu', name='density_conv')(merges)
 
     model = Model(inputs=inputs, outputs=density_map)
     return model
