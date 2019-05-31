@@ -17,7 +17,7 @@ def random_crop(image, density_map, crop_num=9):
     :return:
     """
     height, width = image.shape
-    crop_h, crop_w = height / 2, width / 2  # 裁剪尺寸为原始图像的一半
+    crop_h, crop_w = height / 4, width / 4  # 裁剪尺寸为原始图像的1/4
     crop_h, crop_w = int(crop_h / 16) * 16, int(crop_w / 16) * 16  # 可以被16整除
     # 确定起始点的范围   0<=start;  end=start+crop_size<image_size;    0<=start<image_size-crop_size
     image_crops = []
