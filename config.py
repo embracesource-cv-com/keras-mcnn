@@ -31,13 +31,8 @@ class Config(object):
     TRAIN_BATCH_SIZE = 1
     VAL_BATCH_SIZE = 1
 
-    MEAN_A = 0.02
-    STD_A = 0.056
-    MEAN_B = 0.0018
-    STD_B = 0.01472
-
-    MEAN = 0.
-    STD = 1.
+    MEAN = 0.02
+    STD = 0.056
 
     def init_path(self, ds):
         """
@@ -55,9 +50,6 @@ class Config(object):
 
         self.TEST_PATH = self.TEST_PATH.format(ds)
         self.TEST_GT_PATH = self.TEST_GT_PATH.format(ds)
-
-        self.MEAN = self.MEAN_A if 'A' == ds else self.MEAN_B
-        self.STD = self.STD_A if 'A' == ds else self.STD_B
 
 
 current_config = Config()

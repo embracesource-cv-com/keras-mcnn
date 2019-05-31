@@ -49,7 +49,7 @@ def main(args):
     # 定义模型
     input_shape = (None, None, 1)
     model = MCNN(input_shape)
-    adam = Adam(lr=1e-5)
+    adam = Adam(lr=1e-4)
     model.compile(loss='mse', optimizer=adam, metrics=[mae, mse])
     # 加载与训练模型
     if args.weight_path is not None:
