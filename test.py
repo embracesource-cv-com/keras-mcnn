@@ -43,13 +43,15 @@ def main(args):
     for idx, (img, gt) in enumerate(data_loader):
         filename = data_loader.filename_list[idx]
         pred = model.predict(img)
+        pred *= cfg.STD
+        pred += cfg.MEAN
         gt_count = np.sum(gt)
         pred_count = np.sum(pred)
         mae += abs(gt_count - pred_count)
         mse += ((gt_count - pred_count) * (gt_count - pred_count))
         # create and save heatmap
         pred = np.squeeze(pred)  # shape(1, h, w, 1) -> shape(h, w)
-        save_heatmap(pred, img, filename, heatmaps_dir)
+        # save_heatmap(pred, img, filename, heatmaps_dir)
         # save results
         with open(results_txt, 'a') as f:
             line = '<{}> {:.2f} -- {:.2f}\n'.format(filename, gt_count, pred_count)

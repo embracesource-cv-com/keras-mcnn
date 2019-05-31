@@ -35,25 +35,32 @@ def main(args):
                                 cfg.TRAIN_GT_PATH,
                                 batch_size=cfg.TRAIN_BATCH_SIZE,
                                 shuffle=True,
-                                gt_downsample=True)
+                                gt_downsample=True,
+                                mean=cfg.MEAN,
+                                std=cfg.STD)
     val_data_gen = DataLoader(cfg.VAL_PATH,
                               cfg.VAL_GT_PATH,
                               batch_size=cfg.VAL_BATCH_SIZE,
                               shuffle=False,
-                              gt_downsample=True)
+                              gt_downsample=True,
+                              mean=cfg.MEAN,
+                              std=cfg.STD)
 
     # 定义模型
     input_shape = (None, None, 1)
     model = MCNN(input_shape)
     adam = Adam(lr=1e-5)
     model.compile(loss='mse', optimizer=adam, metrics=[mae, mse])
+    # 加载与训练模型
+    if args.weight_path is not None:
+        model.load_weights(args.weight_path, by_name=True)
 
     # 定义callback
     checkpoint = ModelCheckpoint(
         filepath=cfg.WEIGHT_PATH,
         monitor='val_loss',
         verbose=1,
-        save_best_only=True,
+        save_best_only=False,
         save_weights_only=True,
         mode='min',
         period=5
@@ -65,6 +72,7 @@ def main(args):
     model.fit_generator(train_data_gen,
                         validation_data=val_data_gen,
                         epochs=cfg.EPOCHS,
+                        initial_epoch=args.init_epoch,
                         callbacks=callback_list,
                         use_multiprocessing=True,
                         workers=4,
@@ -74,5 +82,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset", help="the dataset you want to train", choices=['A', 'B'])
+    parser.add_argument("--init_epoch", type=int, default=0, help="init epoch")
+    parser.add_argument("--weight_path", type=str, default=None, help="weight path")
     args = parser.parse_args()
     main(args)

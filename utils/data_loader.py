@@ -13,7 +13,7 @@ from keras.utils import Sequence
 
 
 class DataLoader(Sequence):
-    def __init__(self, data_path, gt_path, batch_size=1, shuffle=False, gt_downsample=False):
+    def __init__(self, data_path, gt_path, batch_size=1, shuffle=False, gt_downsample=False, mean=0., std=1.):
         """
         :param data_path: 图片文件路径
         :param gt_path: ground truth路径
@@ -26,6 +26,8 @@ class DataLoader(Sequence):
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.gt_downsample = gt_downsample
+        self.mean = mean
+        self.std = std
         self.filename_list = [filename for filename in os.listdir(data_path)]
 
     def __getitem__(self, item):
@@ -75,8 +77,9 @@ class DataLoader(Sequence):
             den = cv2.resize(den, (w // 4, h // 4))
         scale_factor = w * h / ((w // 4) * (h // 4))
         den *= scale_factor
+        # 减均值，除方差
+        den -= self.mean
+        den /= self.std
 
         # 扩展通道维返回
         return im[:, :, np.newaxis], den[:, :, np.newaxis]
-
-
