@@ -22,7 +22,7 @@ def main(args):
                                 gt_downsample=True)
     dens = [np.ravel(den) for im, den in train_data_gen]
     dens = np.concatenate(dens, axis=0)
-    print("std:{}".format(np.std(dens)))
+    print("mean:{},std:{}".format(np.mean(dens), np.std(dens)))
 
 
 if __name__ == '__main__':
