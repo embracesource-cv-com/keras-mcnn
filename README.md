@@ -50,7 +50,7 @@ keras复现人群数量估计网络["Single Image Crowd Counting via Multi Colum
 
 ## 测试
 
-a)下载与与训练模型
+a)下载训练模型
 
 [mcnn-A.160.h5](https://drive.google.com/open?id=1szCKlFLmkz7TL1axcX8jDTazq8YOW_QP) 、[mcnn-B.035.h5](https://drive.google.com/open?id=1cWGXLYR2lVllbU8JodV88gpc42BWSjyG)
 
